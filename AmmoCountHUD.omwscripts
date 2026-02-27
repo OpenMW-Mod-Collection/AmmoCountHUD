@@ -1,0 +1,3 @@
+PLAYER: scripts/AmmoCountHUD/player.lua
+
+MENU: scripts/AmmoCountHUD/settingsMenu.lua
