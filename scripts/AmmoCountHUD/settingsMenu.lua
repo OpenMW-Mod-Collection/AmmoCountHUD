@@ -79,6 +79,7 @@ I.Settings.registerGroup {
         {
             key = 'posX',
             name = 'posX_name',
+            description = "posX_desc",
             renderer = 'number',
             default = .06,
             min = 0,
@@ -87,6 +88,7 @@ I.Settings.registerGroup {
         {
             key = 'posY',
             name = 'posY_name',
+            description = "posY_desc",
             renderer = 'number',
             default = .967,
             min = 0,

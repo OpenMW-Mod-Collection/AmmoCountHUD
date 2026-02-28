@@ -46,7 +46,7 @@ local hudMode = {
 }
 
 local function setHUDAmmmoCount(count)
-    E.ammo.layout.props.text = tostring(count or 0)
+    E.ammo.layout.props.text = tostring(count or "")
 end
 
 local function getAmmoCount()

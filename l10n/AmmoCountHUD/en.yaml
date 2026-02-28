@@ -10,7 +10,9 @@ looks_groupName: Looks
 enabled_name: HUD Enabled
 positionLocked_name: Lock Position
 posX_name: X Position
+posX_desc: 0 - left, 1 - right.
 posY_name: Y Position
+posY_desc: 0 - top, 1 - bottom.
 fontSize_name: Font Size
 fontColor_name: Font Color
 textAlignment_name: Text Alignment
