@@ -8,11 +8,10 @@ hudMode_name: HUD Mode
 
 looks_groupName: Looks
 enabled_name: HUD Enabled
-positionLocked_name: Lock Position
+positionLocked_name: Disable Mouse Interactions
+positionLocked_desc: If enabled, HUD can be moved by dragging it and resized by scrolling mouse wheel.
 posX_name: X Position
-posX_desc: 0 - left, 1 - right.
 posY_name: Y Position
-posY_desc: 0 - top, 1 - bottom.
 fontSize_name: Font Size
 fontColor_name: Font Color
 textAlignment_name: Text Alignment
