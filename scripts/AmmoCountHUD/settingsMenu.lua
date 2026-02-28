@@ -1,4 +1,19 @@
 local I = require('openmw.interfaces')
+local util = require("openmw.util")
+
+local presetColors = {
+    "d4edfc", -- thirst
+    "bfd4bc", -- hunger
+    "cfbddb", -- sleep
+    "81cded", -- fav color of blue
+    "caa560", -- fontColor_color_normal
+    "d4b77f", -- goldenMix
+    "dfc99f", -- FontColor_color_normal_over
+    "eee2c9", -- lightText
+    "253170", -- fontColor_color_journal_link
+    "3a4daf", -- fontColor_color_journal_link_over
+    "707ecf", -- fontColor_color_journal_link_pressed
+}
 
 I.Settings.registerPage {
     key = 'AmmoCountHUD',
@@ -8,10 +23,10 @@ I.Settings.registerPage {
 }
 
 I.Settings.registerGroup {
-    key = 'SettingsAmmoCountHUD_settings',
+    key = 'SettingsAmmoCountHUD_behavior',
     page = 'AmmoCountHUD',
     l10n = 'AmmoCountHUD',
-    name = 'settings_groupName',
+    name = 'behavior_groupName',
     permanentStorage = true,
     order = 1,
     settings = {
@@ -26,16 +41,56 @@ I.Settings.registerGroup {
         {
             key = 'hudMode',
             name = 'hudMode_name',
-            description = "hudMode_desc",
             renderer = 'select',
             argument = {
                 l10n = "AmmoCountHUD",
                 items = {
                     "Equipped",
                     "Total",
+                    "Eqipped/Total",
                 },
             },
+            default = "Equipped",
+        },
+    }
+}
+
+
+I.Settings.registerGroup {
+    key = 'SettingsAmmoCountHUD_looks',
+    page = 'AmmoCountHUD',
+    l10n = 'AmmoCountHUD',
+    name = 'looks_groupName',
+    permanentStorage = true,
+    order = 1,
+    settings = {
+        {
+            key = 'enabled',
+            name = 'enabled_name',
+            renderer = 'checkbox',
             default = true,
+        },
+        {
+            key = 'positionLocked',
+            name = 'positionLocked_name',
+            renderer = 'checkbox',
+            default = false,
+        },
+        {
+            key = 'posX',
+            name = 'posX_name',
+            renderer = 'number',
+            default = .06,
+            min = 0,
+            max = 1,
+        },
+        {
+            key = 'posY',
+            name = 'posY_name',
+            renderer = 'number',
+            default = .967,
+            min = 0,
+            max = 1,
         },
         {
             key = 'fontSize',
@@ -43,6 +98,29 @@ I.Settings.registerGroup {
             renderer = 'number',
             default = 16,
             min = 0,
+        },
+        {
+            key = 'fontColor',
+            name = 'fontColor_name',
+            renderer = "SuperColorPicker2",
+            default = util.color.hex("caa560"),
+            argument = {
+                presetColors = presetColors,
+            },
+        },
+        {
+            key = 'textAlignment',
+            name = 'textAlignment_name',
+            renderer = 'select',
+            argument = {
+                l10n = "AmmoCountHUD",
+                items = {
+                    "Left",
+                    "Center",
+                    "Right",
+                },
+            },
+            default = "Right",
         },
     }
 }
