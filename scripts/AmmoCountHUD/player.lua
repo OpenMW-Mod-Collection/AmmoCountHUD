@@ -9,6 +9,7 @@ local C = require("scripts.AmmoCountHUD.utils.consts")
 
 local settingsBehavior = storage.playerSection("SettingsAmmoCountHUD_behavior")
 local settingsLooks = storage.playerSection("SettingsAmmoCountHUD_looks")
+local inv = self.type.inventory(self)
 local updateTime = 0
 
 local function getEquippedAmmoCount(weapon, ammoType)
@@ -24,7 +25,6 @@ local function getEquippedAmmoCount(weapon, ammoType)
 end
 
 local function getTotalAmmoCount(weapon, ammoType)
-    local inv = self.type.inventory(self)
     local allAmmo = inv:getAll(types.Weapon)
     local ammoCounter = 0
     for _, item in ipairs(allAmmo) do
@@ -50,8 +50,8 @@ local function setHUDAmmmoCount(count)
 end
 
 local function getAmmoCount()
-    local equipment = self.type.getEquipment(self)
-    local weapon = equipment[self.type.EQUIPMENT_SLOT.CarriedRight]
+    local weapon = self.type.getEquipment(self,
+        self.type.EQUIPMENT_SLOT.CarriedRight)
 
     -- no weapon equipped
     if not weapon then
