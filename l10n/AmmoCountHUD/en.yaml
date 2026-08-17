@@ -7,11 +7,18 @@ cooldown_desc: How often the HUD is refreshed.
 hudMode_name: HUD Mode
 
 looks_groupName: Looks
-enabled_name: HUD Enabled
+displayMode_name: Display Mode
+displayMode_e: Equipped
+displayMode_t: Total
+displayMode_et: Equipped/Total
 positionLocked_name: Disable Mouse Interactions
-positionLocked_desc: If enabled, HUD can be moved by dragging it and resized by scrolling mouse wheel.
+positionLocked_desc: If enabled, HUD can be moved by dragging it and resized by scrolling the mouse wheel while dragging.
 posX_name: X Position
 posY_name: Y Position
 fontSize_name: Font Size
 fontColor_name: Font Color
-textAlignment_name: Text Alignment
+expandTo_name: Expand Text to the...
+expandTo_right: Right
+expandTo_center: Center
+expandTo_left: Left
+enableTextShadow_name: Enable Text Shadow

@@ -1,4 +1,5 @@
-PLAYER: scripts/AmmoCountHUD/player.lua
-
 MENU: scripts/AmmoCountHUD/utils/colorPicker.lua
+
 MENU: scripts/AmmoCountHUD/settingsMenu.lua
+
+PLAYER: scripts/AmmoCountHUD/player.lua

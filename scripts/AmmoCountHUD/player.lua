@@ -1,3 +1,4 @@
+---@diagnostic disable: lowercase-global
 local I = require("openmw.interfaces")
 local types = require("openmw.types")
 local self = require("openmw.self")
@@ -5,23 +6,35 @@ local storage = require("openmw.storage")
 local async = require("openmw.async")
 
 local E = require("scripts.AmmoCountHUD.uiElements")
-local C = require("scripts.AmmoCountHUD.utils.consts")
+local settingsCache = require("scripts.AmmoCountHUD.utils.settingsCache")
 
-local settingsBehavior = storage.playerSection("SettingsAmmoCountHUD_behavior")
-local settingsLooks = storage.playerSection("SettingsAmmoCountHUD_looks")
+local settingsBehavior = settingsCache.new(
+    storage.playerSection("SettingsAmmoCountHUD_behavior"),
+    async,
+    function()
+        onUpdate(math.huge)
+    end
+)
 local inv = self.type.inventory(self)
+local weaponTypeToAmmoType = {
+    [types.Weapon.TYPE.MarksmanBow]      = types.Weapon.TYPE.Arrow,
+    [types.Weapon.TYPE.MarksmanCrossbow] = types.Weapon.TYPE.Bolt,
+    [types.Weapon.TYPE.MarksmanThrown]   = types.Weapon.TYPE.MarksmanThrown,
+}
 local updateTime = 0
 
 local function getEquippedAmmoCount(weapon, ammoType)
     if ammoType == types.Weapon.TYPE.MarksmanThrown then
         return weapon.count
-    else
-        local ammo = self.type.getEquipment(self, self.type.EQUIPMENT_SLOT.Ammunition)
-        if not ammo then return 0 end
-
-        local ammoRecord = ammo.type.records[ammo.recordId]
-        return ammoRecord.type == ammoType and ammo.count or 0
     end
+
+    local ammo = self.type.getEquipment(self, self.type.EQUIPMENT_SLOT.Ammunition)
+    if not ammo then return 0 end
+
+    local ammoRecord = ammo.type.records[ammo.recordId]
+    return ammoRecord.type == ammoType
+        and ammo.count
+        or 0
 end
 
 local function getTotalAmmoCount(weapon, ammoType)
@@ -35,19 +48,15 @@ local function getTotalAmmoCount(weapon, ammoType)
     return ammoCounter
 end
 
-local hudMode = {
-    ["Equipped"] = getEquippedAmmoCount,
-    ["Total"] = getTotalAmmoCount,
-    ["Eqipped/Total"] = function(weapon, ammoType)
+local ammoCountGetters = {
+    displayMode_e = getEquippedAmmoCount,
+    displayMode_t = getTotalAmmoCount,
+    displayMode_et = function(weapon, ammoType)
         local equipped = getEquippedAmmoCount(weapon, ammoType)
         local total = getTotalAmmoCount(weapon, ammoType)
-        return tostring(equipped) .. "/" .. tostring(total)
+        return ("%d/%d"):format(equipped, total)
     end
 }
-
-local function setHUDAmmmoCount(count)
-    E.ammo.layout.props.text = tostring(count or "")
-end
 
 local function getAmmoCount()
     local weapon = self.type.getEquipment(self,
@@ -55,50 +64,44 @@ local function getAmmoCount()
 
     -- no weapon equipped
     if not weapon then
-        return nil
+        return ""
     end
 
     local weaponType = weapon.type.records[weapon.recordId].type
-    local ammoType = C.weaponTypeToAmmoType[weaponType]
+    local ammoType = weaponTypeToAmmoType[weaponType]
 
     -- equipped weapon is not marksman
     if not ammoType then
-        return nil
+        return ""
     end
 
-    local ammoCountGetter = hudMode[settingsBehavior:get("hudMode")]
-    return ammoCountGetter(weapon, ammoType)
+    local ammoCountGetter = ammoCountGetters[settingsBehavior.displayMode]
+    return tostring(ammoCountGetter(weapon, ammoType))
 end
 
-local function onFrame(dt)
-    E.ammo.layout.props.visible = settingsLooks:get("enabled") and I.UI.isHudVisible()
+function onUpdate(dt)
+    E.ammo.layout.props.visible = I.UI.isHudVisible()
 
     updateTime = updateTime + dt
-    local checkEvery = settingsBehavior:get('cooldown')
+    local checkEvery = settingsBehavior.cooldown
 
     if updateTime < checkEvery then
         E.ammo:update()
         return
     end
 
-    if checkEvery == 0 then
-        updateTime = 0
-    else
-        while updateTime > checkEvery do
-            updateTime = updateTime - checkEvery
-        end
-    end
+    updateTime = checkEvery == 0
+        and 0
+        or updateTime % checkEvery
 
-    setHUDAmmmoCount(getAmmoCount())
+    E.ammo.layout.props.text = getAmmoCount()
     E.ammo:update()
 end
 
-settingsBehavior:subscribe(async:callback(function()
-    onFrame(settingsBehavior:get("cooldown"))
-end))
+onUpdate(math.huge)
 
 return {
     engineHandlers = {
-        onFrame = onFrame,
-    }
+        onUpdate = onUpdate,
+    },
 }

@@ -39,18 +39,18 @@ I.Settings.registerGroup {
             min = 0,
         },
         {
-            key = 'hudMode',
-            name = 'hudMode_name',
+            key = 'displayMode',
+            name = 'displayMode_name',
             renderer = 'select',
             argument = {
                 l10n = "AmmoCountHUD",
                 items = {
-                    "Equipped",
-                    "Total",
-                    "Eqipped/Total",
+                    "displayMode_e",
+                    "displayMode_t",
+                    "displayMode_et",
                 },
             },
-            default = "Equipped",
+            default = "displayMode_e",
         },
     }
 }
@@ -64,12 +64,6 @@ I.Settings.registerGroup {
     permanentStorage = true,
     order = 1,
     settings = {
-        {
-            key = 'enabled',
-            name = 'enabled_name',
-            renderer = 'checkbox',
-            default = true,
-        },
         {
             key = 'positionLocked',
             name = 'positionLocked_name',
@@ -108,18 +102,24 @@ I.Settings.registerGroup {
             },
         },
         {
-            key = 'textAlignment',
-            name = 'textAlignment_name',
+            key = "enableTextShadow",
+            name = 'enableTextShadow_name',
+            renderer = 'checkbox',
+            default = true,
+        },
+        {
+            key = 'expandTo',
+            name = 'expandTo_name',
             renderer = 'select',
             argument = {
                 l10n = "AmmoCountHUD",
                 items = {
-                    "Left",
-                    "Center",
-                    "Right",
+                    "expandTo_left",
+                    "expandTo_center",
+                    "expandTo_right",
                 },
             },
-            default = "Right",
+            default = "expandTo_left",
         },
     }
 }
