@@ -1,5 +1,6 @@
 local I = require('openmw.interfaces')
 local util = require("openmw.util")
+local ui = require("openmw.ui")
 
 local presetColors = {
     "d4edfc", -- thirst
@@ -14,6 +15,7 @@ local presetColors = {
     "3a4daf", -- fontColor_color_journal_link_over
     "707ecf", -- fontColor_color_journal_link_pressed
 }
+local screenSize = ui.screenSize()
 
 I.Settings.registerPage {
     key = 'AmmoCountHUD',
@@ -72,18 +74,32 @@ I.Settings.registerGroup {
             default = false,
         },
         {
-            key = 'posX',
-            name = 'posX_name',
-            renderer = 'number',
-            default = 116,
-            min = 0,
+            key = "posX",
+            name = "posX_name",
+            renderer = "SuperSlider6",
+            default = 115,
+            argument = {
+                min = 0,
+                max = screenSize.x,
+                default = 115,
+                minLabel = "Left",
+                maxLabel = "Right",
+                unit = "px",
+            },
         },
         {
-            key = 'posY',
-            name = 'posY_name',
-            renderer = 'number',
-            default = 1045,
-            min = 0,
+            key = "posY",
+            name = "posY_name",
+            renderer = "SuperSlider6",
+            default = 35,
+            argument = {
+                min = 0,
+                max = screenSize.y,
+                default = 35,
+                minLabel = "Down",
+                maxLabel = "Up",
+                unit = "px",
+            },
         },
         {
             key = 'fontSize',

@@ -1,4 +1,5 @@
 MENU: scripts/AmmoCountHUD/utils/colorPicker.lua
+MENU: scripts/AmmoCountHUD/utils/SuperSlider6.lua
 
 MENU: scripts/AmmoCountHUD/settingsMenu.lua
 
